@@ -84,8 +84,8 @@ class RRB3:
         self.old_right_dir = right_dir
 
     def set_motors(self, left_pwm, left_dir, right_pwm, right_dir):
-        self.set_left_motor(left_pwn, left_dir)
-        self.set_right_motor(right_pwn, right_dir)
+        self.set_left_motor(left_pwm, left_dir)
+        self.set_right_motor(right_pwm, right_dir)
 
     def set_left_driver_pins(self, left_pwm, left_dir):
         self.left_pwm.ChangeDutyCycle(left_pwm * 100 * self.pwm_scale)
@@ -98,8 +98,8 @@ class RRB3:
         GPIO.output(self.RIGHT_2_PIN, not right_dir)
 
     def set_driver_pins(self, left_pwm, left_dir, right_pwm, right_dir):
-        self.set_left_driver_pins(left_pwn, left_dir)
-        self.set_right_driver_pins(right_pwn, right_dir)
+        self.set_left_driver_pins(left_pmn, left_dir)
+        self.set_right_driver_pins(right_pwm, right_dir)
         GPIO.output(self.RIGHT_2_PIN, not right_dir)
 
     def forward(self, seconds=0, speed=1.0):
