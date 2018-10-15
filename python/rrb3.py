@@ -69,20 +69,37 @@ class RRB3:
         GPIO.setup(self.TRIGGER_PIN, GPIO.OUT)
         GPIO.setup(self.ECHO_PIN, GPIO.IN)
 
-    def set_motors(self, left_pwm, left_dir, right_pwm, right_dir):
-        if self.old_left_dir != left_dir or self.old_right_dir != right_dir:
-            self.set_driver_pins(0, 0, 0, 0)    # stop motors between sudden changes of direction
+    def set_left_motor(self, left_pwm, left_dir):
+        if self.old_left_dir != left_dir:
+            self.set_left_driver_pins(0, 0, 0, 0)    # stop motors between sudden changes of direction
             time.sleep(self.MOTOR_DELAY)
-        self.set_driver_pins(left_pwm, left_dir, right_pwm, right_dir)
+        self.set_left_driver_pins(left_pwm, left_dir)
         self.old_left_dir = left_dir
+
+    def set_right_motor(self, right_pwm, right_dir):
+        if self.old_right_dir != right_dir:
+            self.set_right_driver_pins(0, 0)    # stop motors between sudden changes of direction
+            time.sleep(self.MOTOR_DELAY)
+        self.set_right_driver_pins(right_pwm, right_dir)
         self.old_right_dir = right_dir
 
-    def set_driver_pins(self, left_pwm, left_dir, right_pwm, right_dir):
+    def set_motors(self, left_pwm, left_dir, right_pwm, right_dir):
+        self.set_left_motor(left_pwn, left_dir)
+        self.set_right_motor(right_pwn, right_dir)
+
+    def set_left_driver_pins(self, left_pwm, left_dir):
         self.left_pwm.ChangeDutyCycle(left_pwm * 100 * self.pwm_scale)
         GPIO.output(self.LEFT_1_PIN, left_dir)
         GPIO.output(self.LEFT_2_PIN, not left_dir)
+
+    def set_right_driver_pins(self, right_pwm, right_dir):
         self.right_pwm.ChangeDutyCycle(right_pwm * 100 * self.pwm_scale)
         GPIO.output(self.RIGHT_1_PIN, right_dir)
+        GPIO.output(self.RIGHT_2_PIN, not right_dir)
+
+    def set_driver_pins(self, left_pwm, left_dir, right_pwm, right_dir):
+        self.set_left_driver_pins(left_pwn, left_dir)
+        self.set_right_driver_pins(right_pwn, right_dir)
         GPIO.output(self.RIGHT_2_PIN, not right_dir)
 
     def forward(self, seconds=0, speed=1.0):
