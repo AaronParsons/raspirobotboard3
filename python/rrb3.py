@@ -71,7 +71,7 @@ class RRB3:
 
     def set_left_motor(self, left_pwm, left_dir):
         if self.old_left_dir != left_dir:
-            self.set_left_driver_pins(0, 0, 0, 0)    # stop motors between sudden changes of direction
+            self.set_left_driver_pins(0, 0)    # stop motors between sudden changes of direction
             time.sleep(self.MOTOR_DELAY)
         self.set_left_driver_pins(left_pwm, left_dir)
         self.old_left_dir = left_dir
